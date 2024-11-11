@@ -29,7 +29,7 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install dependencies
-        run: pip install -U pre-commit
+        run: pip install -U pre-commit -r requirements-test.txt
       - name: Run pre-commit
         run: pre-commit run --all-files
 
@@ -70,11 +70,12 @@ jobs:
     - name: Run tests and coverage
       run: coverage run --source=$SOURCE_FOLDER -m pytest -W ignore::DeprecationWarning -rxXs --reruns 3
       env:
-        SOURCE_FOLDER: gnosis
+        SOURCE_FOLDER: safe_eth
         DJANGO_SETTINGS_MODULE: config.settings.test
         ETHEREUM_MAINNET_NODE: ${{ secrets.ETHEREUM_MAINNET_NODE }}
         ETHEREUM_POLYGON_NODE: ${{ secrets.ETHEREUM_POLYGON_NODE }}
         ETHEREUM_4337_BUNDLER_URL: ${{ secrets.ETHEREUM_4337_BUNDLER_URL }}
+        ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
     - name: Test packaging
       run: pip install -e .
     - name: Send results to coveralls
