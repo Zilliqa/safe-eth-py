@@ -580,6 +580,8 @@ class Safe(SafeCreator, ContractBase, metaclass=ABCMeta):
                 # NOTE: Zilliqa specific validation rules don't accept from_address caller itself or None.
                 #       So we use zero address as from_address.
                 from_address="0x0000000000000000000000000000000000000000",
+                # NOTE: Zilliqa RPC does not support multicall.
+                force_batch_call=True,
                 block_identifier=block_identifier,
                 raise_exception=False,
             )
